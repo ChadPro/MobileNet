@@ -13,14 +13,6 @@ import matplotlib.pyplot as plt
 IMG_SIZE = 224
 IMG_CHANNELS = 3
 
-# Data num
-NUM_TRAIN = 1000
-NUM_VALIDARION = 360
-
-#TFRecord file
-TRAIN_FILE = 'train.tfrecords'
-VALIDATION_FILE = 'validation.tfrecords'
-
 def read_and_decode(filename_queue):
     reader = tf.TFRecordReader()
     _,serialized_example = reader.read(filename_queue)
@@ -50,6 +42,6 @@ def inputs(train_path, val_path, data_set,batch_size,num_epochs):
         ll = tf.expand_dims(labels, 1)
         indices = tf.expand_dims(tf.range(0, batch_size, 1), 1)
         concated = tf.concat([indices, ll], 1)
-        onehot_labels = tf.sparse_to_dense(concated, tf.stack([batch_size, 17]), 1.0, 0.0)
+        onehot_labels = tf.sparse_to_dense(concated, tf.stack([batch_size, 100]), 1.0, 0.0)
 
     return images, onehot_labels, labels

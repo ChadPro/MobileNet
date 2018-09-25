@@ -1,4 +1,8 @@
-import tensorflow as tf
+# -- coding: utf-8 --
+# Copyright 2018 The LongYan. All Rights Reserved.
+from __future__ import absolute_import
+from __future__ import division
+
 from nets import mobile_net_224_original
 from nets import mobile_net_224_v1
 from nets import mobile_net_224_v2

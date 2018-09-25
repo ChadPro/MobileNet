@@ -1,4 +1,7 @@
 # -- coding: utf-8 --
+# Copyright 2018 The LongYan. All Rights Reserved.
+from __future__ import absolute_import
+from __future__ import division
 
 import os
 import pickle
@@ -10,7 +13,7 @@ import sys
 import time
 from nets import nets_factory
 from datasets import dataset_factory
-#数据batch大小
+from py_extend import vgg_acc
 
 #训练参数
 REGULARIZATION_RATE= 0.0001    
@@ -25,7 +28,7 @@ tf.app.flags.DEFINE_integer('learning_decay_step', 500, 'Learning rate decay ste
 tf.app.flags.DEFINE_integer('total_steps', 300000, 'Train total steps.')
 tf.app.flags.DEFINE_float('gpu_fraction', 0.7, 'How to use gpu.')
 tf.app.flags.DEFINE_string('train_model_dir', './model/model.ckpt', 'Directory where checkpoints are written to.')
-tf.app.flags.DEFINE_string('log_dir', './path/to/log', 'Log file saved.')
+tf.app.flags.DEFINE_string('log_dir', './log', 'Log file saved.')
 
 tf.app.flags.DEFINE_string('train_data_path','', 'Dataset for train.')
 tf.app.flags.DEFINE_string('val_data_path', '', 'Dataset for val.')
@@ -151,7 +154,6 @@ def train():
 
 def main(argv=None):
     train()
-
 
 if __name__== '__main__': 
     tf.app.run()

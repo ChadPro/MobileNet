@@ -1,13 +1,20 @@
+# -- coding: utf-8 --
+# Copyright 2018 The LongYan. All Rights Reserved.
 from __future__ import absolute_import
 from __future__ import division
-from __future__ import print_function
 
 from datasets import imagenet_300
 from datasets import data_imagenet
+from datasets import flowers17_224
+from datasets import cifar10_224
+from datasets import cifar100_224
 
 datasets_map = {
     'imagenet_300' : imagenet_300,
-    'imagenet_224' : data_imagenet
+    'imagenet_224' : data_imagenet,
+    'flowers17_224' : flowers17_224,
+    'cifar10_224' : cifar10_224,
+    'cifar100_224' : cifar100_224
 }
 
 def get_dataset(name):

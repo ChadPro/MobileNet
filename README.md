@@ -7,15 +7,6 @@ Download in.
 # Net Construct
 1. Primary MobileNet-224 original
 
-2. MobileNet-224 v1
-
-3. MobileNet-224 v2
-
-3. MobileNet-300 v1
-
-4. MobileNet-300 v2
-
-
 # Use this Repository
 ### Run
 
