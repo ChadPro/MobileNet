@@ -5,9 +5,7 @@ from __future__ import division
 
 import tensorflow as tf
 import numpy as np
-from collections import namedtuple
 
-#输入与输出层
 IMAGE_SIZE = 224
 NUM_CHANNELS = 3
 STDDEV = 0.01
@@ -30,24 +28,23 @@ def separable_conv2d(inputs, dw_size, pw_size, downsample=False, is_training=Tru
         pw_active = ACTIVATION(pw_bn)
     return pw_active, dw_filter, pw_filter
 
-
 def mobile_net(inputs, \
                 num_classes=DEFAULT_OUTPUT_NODE, \
                 is_training=True, \
                 reuse=None, \
                 white_bal=False, \
-                scope='mobile_net_224_original'):
+                scope='mobile_net_300_original'):
 
     # rgb --> bgr
     dst_img = inputs
     if white_bal:
         rgb_scaled = dst_img
         red, green, blue = tf.split(axis=3, num_or_size_splits=3, value=rgb_scaled)
-        assert red.get_shape().as_list()[1:] == [224, 224, 1]
-        assert green.get_shape().as_list()[1:] == [224, 224, 1]
-        assert blue.get_shape().as_list()[1:] == [224, 224, 1]
+        assert red.get_shape().as_list()[1:] == [300, 300, 1]
+        assert green.get_shape().as_list()[1:] == [300, 300, 1]
+        assert blue.get_shape().as_list()[1:] == [300, 300, 1]
         dst_img = tf.concat(axis=3, values=[blue - VGG_MEAN[0],green - VGG_MEAN[1],red - VGG_MEAN[2],])
-        assert dst_img.get_shape().as_list()[1:] == [224, 224, 3]
+        assert dst_img.get_shape().as_list()[1:] == [300, 300, 3]
 
     nets_dict = {}
     weights_dict = {}
@@ -97,4 +94,3 @@ def mobile_net(inputs, \
             fc1 = tf.matmul(reshaped, fc1_weights) + fc1_biase
 
     return fc1, nets_dict, weights_dict
-
