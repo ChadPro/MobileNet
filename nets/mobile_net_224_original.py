@@ -32,16 +32,19 @@ def mobile_net(inputs, \
                 num_classes=DEFAULT_OUTPUT_NODE, \
                 is_training=True, \
                 reuse=None, \
+                white_bal=False, \
                 scope='mobile_net_224_original'):
 
-    # rgb --> bgr 
-    rgb_scaled = inputs
-    red, green, blue = tf.split(axis=3, num_or_size_splits=3, value=rgb_scaled)
-    assert red.get_shape().as_list()[1:] == [224, 224, 1]
-    assert green.get_shape().as_list()[1:] == [224, 224, 1]
-    assert blue.get_shape().as_list()[1:] == [224, 224, 1]
-    bgr = tf.concat(axis=3, values=[blue - VGG_MEAN[0],green - VGG_MEAN[1],red - VGG_MEAN[2],])
-    assert bgr.get_shape().as_list()[1:] == [224, 224, 3]
+    # rgb --> bgr
+    dst_img = inputs
+    if white_bal:
+        rgb_scaled = dst_img
+        red, green, blue = tf.split(axis=3, num_or_size_splits=3, value=rgb_scaled)
+        assert red.get_shape().as_list()[1:] == [224, 224, 1]
+        assert green.get_shape().as_list()[1:] == [224, 224, 1]
+        assert blue.get_shape().as_list()[1:] == [224, 224, 1]
+        dst_img = tf.concat(axis=3, values=[blue - VGG_MEAN[0],green - VGG_MEAN[1],red - VGG_MEAN[2],])
+        assert dst_img.get_shape().as_list()[1:] == [224, 224, 3]
 
     nets_dict = {}
     weights_dict = {}
@@ -50,7 +53,7 @@ def mobile_net(inputs, \
         with tf.variable_scope('conv_1'):
             conv1_weights = tf.get_variable("weight", [3, 3, 3, 32], initializer=tf.truncated_normal_initializer(stddev=STDDEV))
             conv1_biases = tf.get_variable("bias", [32], initializer=tf.constant_initializer(0.0))
-            net = tf.nn.conv2d(inputs, conv1_weights, strides=[1,2,2,1], padding='SAME')
+            net = tf.nn.conv2d(dst_img, conv1_weights, strides=[1,2,2,1], padding='SAME')
             net = tf.nn.relu(tf.nn.bias_add(net, conv1_biases))
         nets_dict['conv_1'] = net
         weights_dict['conv_1'] = conv1_weights

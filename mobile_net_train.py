@@ -34,6 +34,7 @@ tf.app.flags.DEFINE_string('train_data_path','', 'Dataset for train.')
 tf.app.flags.DEFINE_string('val_data_path', '', 'Dataset for val.')
 
 tf.app.flags.DEFINE_string('dataset', 'imagenet_224', 'Chose dataset in dataset_factory.')
+tf.app.flags.DEFINE_bool('white_bal',False, 'If white balance.')
 tf.app.flags.DEFINE_integer('image_size', 224, 'Default image size.')
 tf.app.flags.DEFINE_integer('batch_size', 64, 'Default batch_size 64.')
 tf.app.flags.DEFINE_integer('num_classes', 1000, 'Number of classes to use in the dataset.')
