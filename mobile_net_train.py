@@ -28,7 +28,7 @@ tf.app.flags.DEFINE_integer('learning_decay_step', 500, 'Learning rate decay ste
 tf.app.flags.DEFINE_integer('total_steps', 300000, 'Train total steps.')
 tf.app.flags.DEFINE_float('gpu_fraction', 0.7, 'How to use gpu.')
 tf.app.flags.DEFINE_string('train_model_dir', './model/model.ckpt', 'Directory where checkpoints are written to.')
-tf.app.flags.DEFINE_string('log_dir', './log', 'Log file saved.')
+tf.app.flags.DEFINE_string('log_dir', './log_dir', 'Log file saved.')
 
 tf.app.flags.DEFINE_string('train_data_path','', 'Dataset for train.')
 tf.app.flags.DEFINE_string('val_data_path', '', 'Dataset for val.')
@@ -108,23 +108,19 @@ def train():
 
         startTime = time.time()
         for i in range(FLAGS.total_steps):
-            
             X_input, Y_input, testy = sess.run([input_X, input_Y, testtest])
-            
             _, loss_value, step = sess.run([train_step, loss, global_step], feed_dict={x:X_input, y_:Y_input, isTrainNow:True})   
 
-            if i%30 == 0:
-                
+            if i%30 == 0:     
                 learn_rate_now = FLAGS.learning_rate_base * ( FLAGS.learning_rate_decay**(step/ FLAGS.learning_decay_step))
-                
-
                 X_input_val, Y_input_val = sess.run([input_X_val, input_Y_val])
                 
-                summary_str, result, outy, outy_ = sess.run([merged, accuracy,output_y,label_y_], feed_dict={x:X_input_val, y_:Y_input_val, isTrainNow:False})
+                summary_str, result, outy, outy_ = sess.run([merged, accuracy, y, y_], feed_dict={x:X_input_val, y_:Y_input_val, isTrainNow:False})
                 writer.add_summary(summary_str, i)
                 acc = result*100.0
                 accStr = str(acc) + "%"
-
+                acc_top1 = vgg_acc.acc_top1(outy, outy_)
+                acc_top5 = vgg_acc.acc_top5(outy, outy_)
                 run_time = time.time() - startTime
                 run_time = run_time / 60
 
@@ -132,25 +128,23 @@ def train():
                 print("   learning_rate = %g                    "%learn_rate_now)
                 print("   lose(batch)   = %g                    "%loss_value)
                 print("   accuracy      = " + accStr)
+                print("   acc_top1      = " + acc_top1)
+                print("   acc_top5      = " + acc_top5)
                 print("   train run     = %d min"%run_time)
-                print" output : ", outy[0:10]
-                print" label : ", outy_[0:10]
+                #print" output : ", outy[0:10]
+                #print" label : ", outy_[0:10]
                 print(" ")
                 print(" ")
 
             if i%500 == 0:
                 saver.save(sess, FLAGS.train_model_dir)
 
-            
         writer.close()
-
         durationTime = time.time() - startTime
         minuteTime = durationTime/60
         print "To train the MobileNet, we use %d minutes" %minuteTime
-
         coord.request_stop()
         coord.join(threads)
-
 
 def main(argv=None):
     train()
