@@ -49,7 +49,9 @@ FLAGS = tf.app.flags.FLAGS
 def train():
     #1. Get mobile net
     mobile_net = nets_factory.get_network(FLAGS.net_chose)
-    x = tf.placeholder(tf.float32, [FLAGS.batch_size, FLAGS.image_size, FLAGS.image_size, 3], name='x-input')  
+    x = tf.placeholder(tf.float32, [FLAGS.batch_size, FLAGS.image_size, FLAGS.image_size, 3], name='x-input')
+    rgb_img_input = tf.reverse(x, axis=[-1])  
+    tf.summary.image("input", rgb_img_input, 10)
     y_ = tf.placeholder(tf.float32, [FLAGS.batch_size, FLAGS.num_classes], name='y-input')
     isTrainNow = tf.placeholder(tf.bool, name='isTrainNow')
     label_y_ = tf.argmax(y_, 1)
