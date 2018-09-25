@@ -83,6 +83,8 @@ def mobile_net(inputs, \
     
     # pool net
         net = tf.nn.avg_pool(net, (1, 7, 7, 1), (1, 7, 7, 1), padding='SAME', name='avg_pool')
+        print "$$$$$$$$$$$$$"
+        print net.shape
         pool_shape = net.get_shape().as_list()
         nodes = pool_shape[1]*pool_shape[2]*pool_shape[3]
         reshaped = tf.reshape(net, [pool_shape[0], nodes])

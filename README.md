@@ -5,7 +5,14 @@ We use image net data,for 1000 class.
 And we have two types dataset, one is 300 size image dataset, and the other is 224.The names are imageNetTrain_300.tfrecord and imageNetTrain_224.tfrecord.  
 Download in.
 # Net Construct
-1. Primary MobileNet-224 original
+1. Primary MobileNet-224 original  
+![image](http://owv7la1di.bkt.clouddn.com/blog/180129/eE4BIFGIIe.png)
+
+2. MobileNet-300 original
+
+3. MobileNet-224 dense
+
+4. MobileNet-300 dense
 
 # Use this Repository
 ### Run
