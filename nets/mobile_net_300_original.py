@@ -82,7 +82,7 @@ def mobile_net(inputs, \
         net, dw_10, pw_10 = separable_conv2d(net, [3, 3, 1024, 1], [1, 1, 1024, 1024], is_training=is_training, scope='conv_10')
     
     # pool net
-        net = tf.nn.avg_pool(net, (1, 7, 7, 1), (1, 7, 7, 1), padding='SAME', name='avg_pool')
+        net = tf.nn.avg_pool(net, (1, 10, 10, 1), (1, 10, 10, 1), padding='SAME', name='avg_pool')
         pool_shape = net.get_shape().as_list()
         nodes = pool_shape[1]*pool_shape[2]*pool_shape[3]
         reshaped = tf.reshape(net, [pool_shape[0], nodes])
@@ -93,4 +93,4 @@ def mobile_net(inputs, \
             fc1_biase = tf.get_variable('biase', [num_classes], initializer=tf.constant_initializer(STDDEV))
             fc1 = tf.matmul(reshaped, fc1_weights) + fc1_biase
 
-    return fc1, nets_dict, weights_dict
+    return net, nets_dict, weights_dict
