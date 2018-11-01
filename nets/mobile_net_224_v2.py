@@ -1,4 +1,11 @@
 # -- coding: utf-8 --
+# Copyright 2018 The LongYan. All Rights Reserved.
+'''
+本脚本 mobile_net() 实现了变形的 mobile net:
+重复特征提取层改为深度256的位置，并在网络初始添加了一层3*3步长1的特征层
+'''
+from __future__ import absolute_import
+from __future__ import division
 
 import tensorflow as tf
 import numpy as np

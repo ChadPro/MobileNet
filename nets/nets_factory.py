@@ -4,18 +4,18 @@ from __future__ import absolute_import
 from __future__ import division
 
 from nets import mobile_net_224_original
-from nets import mobile_net_300_original
 from nets import mobile_net_224_v1
 from nets import mobile_net_224_v2
+from nets import mobile_net_300_original
 from nets import mobile_net_300_v1
 from nets import mobile_net_300_v2
 
 
 net_map = {
     'mobile_net_224_original' : mobile_net_224_original,
-    'mobile_net_300_original' : mobile_net_300_original,
     'mobile_net_224_v2' : mobile_net_224_v1,
     'mobile_net_224_v3' : mobile_net_224_v2,
+    'mobile_net_300_original' : mobile_net_300_original,
     'mobile_net_300_v1' : mobile_net_300_v1,
     'mobile_net_300_v2' : mobile_net_300_v2
     }

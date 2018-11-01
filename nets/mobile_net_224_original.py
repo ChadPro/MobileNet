@@ -1,5 +1,8 @@
 # -- coding: utf-8 --
 # Copyright 2018 The LongYan. All Rights Reserved.
+'''
+本脚本 mobile_net() 实现了论文中 mobile net
+'''
 from __future__ import absolute_import
 from __future__ import division
 
@@ -7,7 +10,7 @@ import tensorflow as tf
 import numpy as np
 from collections import namedtuple
 
-#输入与输出层
+#input & output param
 IMAGE_SIZE = 224
 NUM_CHANNELS = 3
 STDDEV = 0.01

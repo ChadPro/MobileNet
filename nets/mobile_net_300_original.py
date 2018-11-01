@@ -93,4 +93,4 @@ def mobile_net(inputs, \
             fc1_biase = tf.get_variable('biase', [num_classes], initializer=tf.constant_initializer(STDDEV))
             fc1 = tf.matmul(reshaped, fc1_weights) + fc1_biase
 
-    return net, nets_dict, weights_dict
+    return fc1, nets_dict, weights_dict

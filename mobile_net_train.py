@@ -134,8 +134,6 @@ def train():
                 print("   acc_top1      = " + acc_top1)
                 print("   acc_top5      = " + acc_top5)
                 print("   train run     = %d min"%run_time)
-                #print" output : ", outy[0:10]
-                #print" label : ", outy_[0:10]
                 print(" ")
                 print(" ")
 
