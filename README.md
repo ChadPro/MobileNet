@@ -6,7 +6,6 @@ And we have two types dataset, one is 300 size image dataset, and the other is 2
 Download in.
 # Net Construct
 1. Primary MobileNet-224 original  
-![image](http://owv7la1di.bkt.clouddn.com/blog/180129/eE4BIFGIIe.png){:height="250px" width="200px"}
 
 2. MobileNet-300 original
 
