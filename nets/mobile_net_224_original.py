@@ -56,7 +56,6 @@ def mobile_net(inputs, \
     weights_dict = {}
     # conv
     with tf.name_scope(scope):
-    # with tf.variable_scope(scope):
         with tf.variable_scope('conv_1'):
             conv1_weights = tf.get_variable("weight", [3, 3, 3, 32], initializer=tf.truncated_normal_initializer(stddev=STDDEV))
             conv1_biases = tf.get_variable("bias", [32], initializer=tf.constant_initializer(0.0))

@@ -44,8 +44,8 @@ or
 ```python
 python mobile_net_train.py
 --learning_rate_base=0.01  
---train_data_path='../../Datasets/ImageNet_224/imageNetTrain.tfrecord'
---val_data_path='../../Datasets/ImageNet_224/imageNetVal.tfrecord' 
+--train_data_path='../../Datasets/ImageNet_300/imageNetTrain.tfrecord'
+--val_data_path='../../Datasets/ImageNet_300/imageNetVal.tfrecord' 
 --dataset='imagenet_300'
 --batch_size=32
 --net_chose='mobile_net_300_v1'

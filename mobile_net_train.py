@@ -50,31 +50,35 @@ FLAGS = tf.app.flags.FLAGS
 def train():
     #1. Get mobile net
     mobile_net = nets_factory.get_network(FLAGS.net_chose)
-    x = tf.placeholder(tf.float32, [FLAGS.batch_size, FLAGS.image_size, FLAGS.image_size, 3], name='x-input')
-    rgb_img_input = tf.reverse(x, axis=[-1])  
-    tf.summary.image("input", rgb_img_input, 10)
-    y_ = tf.placeholder(tf.float32, [FLAGS.batch_size, FLAGS.num_classes], name='y-input')
-    isTrainNow = tf.placeholder(tf.bool, name='isTrainNow')
-    label_y_ = tf.argmax(y_, 1)
+    with tf.name_scope("Data_Input"):
+        x = tf.placeholder(tf.float32, [FLAGS.batch_size, FLAGS.image_size, FLAGS.image_size, 3], name='x-input')
+        rgb_img_input = tf.reverse(x, axis=[-1])  
+        tf.summary.image("input", rgb_img_input, 5)
+        y_ = tf.placeholder(tf.float32, [FLAGS.batch_size, FLAGS.num_classes], name='y-input')
+        isTrainNow = tf.placeholder(tf.bool, name='isTrainNow')
+        label_y_ = tf.argmax(y_, 1)
     
     #2. Forward propagation
-    regularizer = tf.contrib.layers.l2_regularizer(REGULARIZATION_RATE)  
-    y, _, __ = mobile_net.mobile_net(x, num_classes=FLAGS.num_classes, is_training=isTrainNow)
-    global_step = tf.Variable(0, trainable=False)
-    output_y = tf.argmax(y, 1)
+    with tf.name_scope("Forward_Propagation"):
+        regularizer = tf.contrib.layers.l2_regularizer(REGULARIZATION_RATE)  
+        y, _, __ = mobile_net.mobile_net(x, num_classes=FLAGS.num_classes, is_training=isTrainNow)
+        global_step = tf.Variable(0, trainable=False)
+        output_y = tf.argmax(y, 1)
 
     #3. Calculate cross_entropy
-    cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y_,logits=y)
-    cross_entropy_mean = tf.reduce_mean(cross_entropy)   
-    # loss = cross_entropy_mean + tf.add_n(tf.get_collection('losses'))
-    loss = cross_entropy_mean
+    with tf.name_scope("Calc_Loss"):
+        cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y_,logits=y)
+        cross_entropy_mean = tf.reduce_mean(cross_entropy)   
+        # loss = cross_entropy_mean + tf.add_n(tf.get_collection('losses'))
+        loss = cross_entropy_mean
 
-     #4. Back propagation
-    learning_rate = tf.train.exponential_decay(FLAGS.learning_rate_base ,global_step, FLAGS.learning_decay_step, FLAGS.learning_rate_decay)  
-    # train_step 梯度下降(学习率，损失函数，全局步数) + BN Layer Params update op
-    update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
-    with tf.control_dependencies(update_ops):
-        train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss, global_step=global_step) 
+    #4. Back propagation
+    with tf.name_scope("Back_Train"):
+        learning_rate = tf.train.exponential_decay(FLAGS.learning_rate_base ,global_step, FLAGS.learning_decay_step, FLAGS.learning_rate_decay)  
+        # train_step 梯度下降(学习率，损失函数，全局步数) + BN Layer Params update op
+        update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
+        with tf.control_dependencies(update_ops):
+            train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss, global_step=global_step) 
 
     #5. Calculate val accuracy
     correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
