@@ -81,8 +81,9 @@ def train():
             train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss, global_step=global_step) 
 
     #5. Calculate val accuracy
-    correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
-    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+    with tf.name_scope("Calc_Acc"):
+        correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
+        accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
     #6. Tensorboard summary and Saver persistent
     tf.summary.scalar('loss', loss)
@@ -122,10 +123,10 @@ def train():
                 learn_rate_now = FLAGS.learning_rate_base * ( FLAGS.learning_rate_decay**(step/ FLAGS.learning_decay_step))
                 X_input_val, Y_input_val = sess.run([input_X_val, input_Y_val])
                 
-                summary_str, result, outy, outy_ = sess.run([merged, accuracy, y, y_], feed_dict={x:X_input_val, y_:Y_input_val, isTrainNow:False})
+                summary_str, outy, outy_ = sess.run([merged, y, y_], feed_dict={x:X_input_val, y_:Y_input_val, isTrainNow:False})
                 writer.add_summary(summary_str, i)
-                acc = result*100.0
-                accStr = str(acc) + "%"
+                # acc = result*100.0
+                # accStr = str(acc) + "%"
                 acc_top1 = vgg_acc.acc_top1(outy, outy_)
                 acc_top5 = vgg_acc.acc_top5(outy, outy_)
                 run_time = time.time() - startTime
@@ -134,7 +135,7 @@ def train():
                 print("############ step : %d ################"%step)
                 print("   learning_rate = %g                    "%learn_rate_now)
                 print("   lose(batch)   = %g                    "%loss_value)
-                print("   accuracy      = " + accStr)
+                # print("   accuracy      = " + accStr)
                 print("   acc_top1      = " + acc_top1)
                 print("   acc_top5      = " + acc_top5)
                 print("   train run     = %d min"%run_time)
