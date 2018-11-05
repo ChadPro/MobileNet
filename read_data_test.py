@@ -1,4 +1,7 @@
 # -- coding: utf-8 --
+# Copyright 2018 The LongYan. All Rights Reserved.
+from __future__ import absolute_import
+from __future__ import division
 
 import os
 import pickle
@@ -11,6 +14,8 @@ import time
 from nets import nets_factory
 from datasets import dataset_factory
 import cv2
+
+
 
 mobile_dataset = dataset_factory.get_dataset('imagenet_300')
 input_X, input_Y, testtest = mobile_dataset.inputs('train', 8, None)

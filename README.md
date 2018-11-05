@@ -54,7 +54,6 @@ python mobile_net_train.py
 
 #### 2. Train Details
 **2.1 ImageNet 224**  
-制作数据集
 ```python
 python mobile_net_train.py
 --learning_rate_base=0.01  
@@ -65,6 +64,8 @@ python mobile_net_train.py
 --net_chose='mobile_net_224_v1'
 --image_size=224
 ```
+
+**2.2 ImageNet 300**
 
 ### Fine Tune
 ```python
