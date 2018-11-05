@@ -14,7 +14,7 @@ FLAGS = tf.app.flags.FLAGS
 def export_graph(model_name):
     graph = tf.Graph()
     with graph.as_default():
-        input_image = tf.placeholder(tf.float32, shape=[1,None,224,224], name='inputdata')
+        input_image = tf.placeholder(tf.float32, shape=[1,224,224,3], name='inputdata')
         mobile_net = nets_factory.get_network(FLAGS.net_chose)
         logits, _, __ = mobile_net.mobile_net(input_image, num_classes=FLAGS.num_classes, is_training=False)
         y_conv = tf.nn.softmax(logits, name='outputdata')
