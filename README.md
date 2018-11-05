@@ -16,8 +16,8 @@ Download in.
 # Use this Repository
 ### Run
 
-### Training
-##### 1. Train param
+### Train
+#### 1. Train param
 We use script **mobile_net_train.py** to train model.  
 ```python
 python mobile_net_train.py
@@ -52,10 +52,21 @@ python mobile_net_train.py
 --image_size=300
 ```
 
-##### 2. Train Details
+#### 2. Train Details
+**2.1 ImageNet 224**  
+制作数据集
+```python
+python mobile_net_train.py
+--learning_rate_base=0.01  
+--train_data_path='../../Datasets/ImageNet_224/imageNetTrain.tfrecord'
+--val_data_path='../../Datasets/ImageNet_224/imageNetVal.tfrecord' 
+--dataset='imagenet_224'
+--batch_size=32
+--net_chose='mobile_net_224_v1'
+--image_size=224
+```
 
-
-### Fine tune
+### Fine Tune
 ```python
 python mobile_net_train.py
 --learning_rate_base=0.01  

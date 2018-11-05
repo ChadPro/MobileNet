@@ -39,6 +39,7 @@ def mobile_net(inputs, \
                 is_training=True, \
                 reuse=None, \
                 white_bal=False, \
+                regularizer=None, \
                 scope='mobile_net_224_original'):
 
     # rgb --> bgr
@@ -59,7 +60,7 @@ def mobile_net(inputs, \
         with tf.variable_scope('conv_1'):
             conv1_weights = tf.get_variable("weight", [3, 3, 3, 32], initializer=tf.truncated_normal_initializer(stddev=STDDEV))
             conv1_biases = tf.get_variable("bias", [32], initializer=tf.constant_initializer(0.0))
-            net = tf.nn.conv2d(dst_img, conv1_weights, strides=[1,2,2,1], padding='SAME')
+            net = tf.nn.conv2d(inputs, conv1_weights, strides=[1,2,2,1], padding='SAME')
             net = tf.nn.relu(tf.nn.bias_add(net, conv1_biases))
         nets_dict['conv_1'] = net
         weights_dict['conv_1'] = conv1_weights

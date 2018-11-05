@@ -35,6 +35,7 @@ tf.app.flags.DEFINE_string('val_data_path', '', 'Dataset for val.')
 
 tf.app.flags.DEFINE_string('dataset', 'imagenet_224', 'Chose dataset in dataset_factory.')
 tf.app.flags.DEFINE_bool('white_bal',False, 'If white balance.')
+tf.app.flags.DEFINE_bool('regularizer', False, 'If use regularizer.')
 tf.app.flags.DEFINE_integer('image_size', 224, 'Default image size.')
 tf.app.flags.DEFINE_integer('batch_size', 64, 'Default batch_size 64.')
 tf.app.flags.DEFINE_integer('num_classes', 1000, 'Number of classes to use in the dataset.')
@@ -60,7 +61,10 @@ def train():
     
     #2. Forward propagation
     with tf.name_scope("Forward_Propagation"):
-        regularizer = tf.contrib.layers.l2_regularizer(REGULARIZATION_RATE)  
+        if FLAGS.regularizer:
+            regularizer = tf.contrib.layers.l2_regularizer(REGULARIZATION_RATE)  
+        else:
+            regularizer = None
         y, _, __ = mobile_net.mobile_net(x, num_classes=FLAGS.num_classes, is_training=isTrainNow)
         global_step = tf.Variable(0, trainable=False)
         output_y = tf.argmax(y, 1)
@@ -113,6 +117,8 @@ def train():
         if len(FLAGS.restore_model_dir) > 0:
             print "#####=============> Restore Model : "+str(FLAGS.restore_model_dir)
             saver.restore(sess, FLAGS.restore_model_dir)
+        else:
+            print "#####=============> Create Model : "+str(FLAGS.train_model_dir)
 
         startTime = time.time()
         for i in range(FLAGS.total_steps):
@@ -125,8 +131,6 @@ def train():
                 
                 summary_str, outy, outy_ = sess.run([merged, y, y_], feed_dict={x:X_input_val, y_:Y_input_val, isTrainNow:False})
                 writer.add_summary(summary_str, i)
-                # acc = result*100.0
-                # accStr = str(acc) + "%"
                 acc_top1 = vgg_acc.acc_top1(outy, outy_)
                 acc_top5 = vgg_acc.acc_top5(outy, outy_)
                 run_time = time.time() - startTime
@@ -135,7 +139,6 @@ def train():
                 print("############ step : %d ################"%step)
                 print("   learning_rate = %g                    "%learn_rate_now)
                 print("   lose(batch)   = %g                    "%loss_value)
-                # print("   accuracy      = " + accStr)
                 print("   acc_top1      = " + acc_top1)
                 print("   acc_top5      = " + acc_top5)
                 print("   train run     = %d min"%run_time)
