@@ -11,7 +11,7 @@ tf.app.flags.DEFINE_string("img_path","./test.jpg","Test image path.")
 FLAGS = tf.app.flags.FLAGS
 
 img = cv2.imread(FLAGS.img_path)
-cv2.resize(img, (224, 224), interpolation=cv2.INTER_CUBIC)
+img = cv2.resize(img, (224, 224), interpolation=cv2.INTER_CUBIC)
 img = np.expand_dims(img, axis=0)
 
 with tf.Graph().as_default():
@@ -23,10 +23,11 @@ with tf.Graph().as_default():
         tf.import_graph_def(output_graph_def, name="")
 
     with tf.Session() as sess:
-        tf.initialize_all_variables.run()
+        init = tf.global_variables_initializer()
+        sess.run(init)
         input_x = sess.graph.get_tensor_by_name("inputdata:0")
         output = sess.graph.get_tensor_by_name("outputdata:0")
 
         yy = sess.run(output, {input_x:img})
-        print yy
+        print np.argmax(yy)
 

@@ -13,10 +13,6 @@ import matplotlib.pyplot as plt
 IMG_SIZE = 300
 IMG_CHANNELS = 3
 
-# Data num
-NUM_TRAIN = 1000
-NUM_VALIDARION = 360
-
 #TFRecord file
 
 def read_and_decode(filename_queue):
@@ -28,7 +24,6 @@ def read_and_decode(filename_queue):
         'image_raw':tf.FixedLenFeature([],tf.string)
     })
     image = tf.decode_raw(features['image_raw'],tf.uint8)
-    print 'image.shape = ',image.shape
     label = tf.cast(features['label'],tf.int32)
     # image.set_shape([IMG_WIDTH*IMG_HEIGHT*IMG_CHANNELS])
     image = tf.reshape(image,[IMG_SIZE,IMG_SIZE,IMG_CHANNELS])
@@ -44,7 +39,6 @@ def inputs(train_path,val_path,data_set,batch_size,num_epochs):
     with tf.name_scope('tfrecord_input') as scope:
         filename_queue = tf.train.string_input_producer([file], num_epochs=num_epochs)
         image,label = read_and_decode(filename_queue)
-        print 'testimage.shape=======',image.shape
         images,labels = tf.train.shuffle_batch([image,label], batch_size=batch_size, num_threads=32, capacity=5000, min_after_dequeue=3000)
 
         ll = tf.expand_dims(labels, 1)
