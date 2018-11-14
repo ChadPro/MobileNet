@@ -6,7 +6,7 @@ from __future__ import division
 import tensorflow as tf
 import numpy as np
 
-IMAGE_SIZE = 224
+IMAGE_SIZE = 300
 NUM_CHANNELS = 3
 STDDEV = 0.01
 VGG_MEAN = [122.173, 116.150, 103.504]  # bgr
@@ -38,11 +38,11 @@ def mobile_net(inputs, \
     # rgb --> bgr
     dst_img = inputs
     if white_bal:
-        rgb_scaled = dst_img
-        red, green, blue = tf.split(axis=3, num_or_size_splits=3, value=rgb_scaled)
-        assert red.get_shape().as_list()[1:] == [300, 300, 1]
-        assert green.get_shape().as_list()[1:] == [300, 300, 1]
-        assert blue.get_shape().as_list()[1:] == [300, 300, 1]
+        bgr_scaled = dst_img
+        blue, green, red = tf.split(axis=3, num_or_size_splits=3, value=bgr_scaled)
+        assert red.get_shape().as_list()[1:] == [IMAGE_SIZE, IMAGE_SIZE, 1]
+        assert green.get_shape().as_list()[1:] == [IMAGE_SIZE, IMAGE_SIZE, 1]
+        assert blue.get_shape().as_list()[1:] == [IMAGE_SIZE, IMAGE_SIZE, 1]
         dst_img = tf.concat(axis=3, values=[blue - VGG_MEAN[0],green - VGG_MEAN[1],red - VGG_MEAN[2],])
         assert dst_img.get_shape().as_list()[1:] == [300, 300, 3]
 
