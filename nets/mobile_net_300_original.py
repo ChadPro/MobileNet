@@ -46,6 +46,7 @@ def mobile_net(inputs, \
         dst_img = tf.concat(axis=3, values=[blue - VGG_MEAN[0],green - VGG_MEAN[1],red - VGG_MEAN[2],])
         assert dst_img.get_shape().as_list()[1:] == [300, 300, 3]
 
+
     nets_dict = {}
     weights_dict = {}
     # conv
