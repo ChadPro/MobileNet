@@ -39,7 +39,7 @@ def inputs(train_path,val_path,data_set,batch_size,num_epochs):
     with tf.name_scope('tfrecord_input') as scope:
         filename_queue = tf.train.string_input_producer([file], num_epochs=num_epochs)
         image,label = read_and_decode(filename_queue)
-        images,labels = tf.train.shuffle_batch([image,label], batch_size=batch_size, num_threads=32, capacity=5000, min_after_dequeue=3000)
+        images,labels = tf.train.shuffle_batch([image,label], batch_size=batch_size, num_threads=8, capacity=2000, min_after_dequeue=1000)
 
         ll = tf.expand_dims(labels, 1)
         indices = tf.expand_dims(tf.range(0, batch_size, 1), 1)

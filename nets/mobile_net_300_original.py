@@ -43,14 +43,14 @@ def mobile_net(inputs, \
         assert red.get_shape().as_list()[1:] == [IMAGE_SIZE, IMAGE_SIZE, 1]
         assert green.get_shape().as_list()[1:] == [IMAGE_SIZE, IMAGE_SIZE, 1]
         assert blue.get_shape().as_list()[1:] == [IMAGE_SIZE, IMAGE_SIZE, 1]
-        dst_img = tf.concat(axis=3, values=[blue - VGG_MEAN[0],green - VGG_MEAN[1],red - VGG_MEAN[2],])
-        assert dst_img.get_shape().as_list()[1:] == [300, 300, 3]
+        dst_img = tf.concat(axis=3, values=[blue - VGG_MEAN[0], green - VGG_MEAN[1], red - VGG_MEAN[2],])
+        assert dst_img.get_shape().as_list()[1:] == [IMAGE_SIZE, IMAGE_SIZE, 3]
 
 
     nets_dict = {}
     weights_dict = {}
     # conv
-    with tf.variable_scope(scope):
+    with tf.name_scope(scope):
         with tf.variable_scope('conv_1'):
             conv1_weights = tf.get_variable("weight", [3, 3, 3, 32], initializer=tf.truncated_normal_initializer(stddev=STDDEV))
             conv1_biases = tf.get_variable("bias", [32], initializer=tf.constant_initializer(0.0))
