@@ -31,4 +31,4 @@ python mobile_net_train.py
 ```
 If want fine tune, add **"--restore_model_dir=\"./model/model.ckpt\""**
 
-
+t
